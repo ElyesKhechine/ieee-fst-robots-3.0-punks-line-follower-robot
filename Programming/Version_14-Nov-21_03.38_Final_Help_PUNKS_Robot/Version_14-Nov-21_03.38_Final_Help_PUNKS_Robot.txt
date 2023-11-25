@@ -1,0 +1,460 @@
+//Ultrason
+const byte TRIGGERleft = 4; // broche TRIGGER
+const byte ECHOleft = 9; // broche ECHO
+
+const byte TRIGGERright = 7; // broche TRIGGER
+const byte ECHOright = A0; // broche ECHO
+
+const byte TRIGGERfront = 8; // broche TRIGGER
+const byte ECHOfront = A1; // broche ECHO
+
+const unsigned long MEASURE_TIMEOUT = 25000UL;
+const float SOUND_SPEED = 340.0 / 1000;
+
+//PDUltrasoN
+float kpULTRA = 2, kdULTRA = 1, erreurancien, erreur, PD = 0, P, D;
+
+long distL = 0, distR = 0, distF = 0;
+
+// Echantillonnage
+const float periode = 20.00;
+
+// Capteurs IR
+const int captExtDroit = A2;
+const int captDroit = A3;
+const int captGauche = A4;
+const int captExtGauche = A5;
+bool c1;
+bool c2;
+bool c3;
+bool c4;
+int etatcapteur = 0;
+
+// PID vitesse
+const float vitesseMax = 300.00;
+const float accelerationMax = 3000.00;
+
+float kp = 1.0;
+float ki = 0.00;
+float kd = 1.0;
+
+float erreurAVR = 0.00;
+float erreurAVL = 0.00;
+
+float rightPD = 0.00;
+float leftPD = 0.00;
+
+// Moteurs
+const int moteurDroitAvant = 11;
+const int moteurDroitDeriere = 10;
+const int moteurGaucheAvant = 5;
+const int moteurGaucheDeriere = 6;
+
+// Encodeurs
+long int counterL = 0;
+long int counterR = 0;
+
+long int previousCounterL = 0;
+long int previousCounterR = 0;
+
+int resolution = 400;
+float diametreRoue = 70.00;
+
+
+const int pinAR = 2;
+const int pinBR = 12;
+const int pinAL = 3;
+const int pinBL = 13;
+
+void distanceleft() {
+  digitalWrite(TRIGGERleft, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIGGERleft, LOW);
+  long measure = pulseIn(ECHOleft, HIGH, MEASURE_TIMEOUT);
+  distL = measure / 2.0 * SOUND_SPEED;
+}
+void distanceright() {
+  digitalWrite(TRIGGERright, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIGGERright, LOW);
+  long measure = pulseIn(ECHOright, HIGH, MEASURE_TIMEOUT);
+  distR = measure / 2.0 * SOUND_SPEED;
+}
+float distancefront() {
+  digitalWrite(TRIGGERfront, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIGGERfront, LOW);
+  long measure = pulseIn(ECHOfront, HIGH, MEASURE_TIMEOUT);
+  distF = measure / 2.0 * SOUND_SPEED;
+}
+void ISRtrackAR() {
+  int A = digitalRead(pinAR);
+  int B = digitalRead(pinBR);
+
+  if ((B && !A) || (A && !B)) {
+    ++counterR;
+  } else {
+    if ((B && A) || (!A && !B)) {
+      --counterR;
+    }
+  }
+}
+
+void ISRtrackAL() {
+  int A = digitalRead(pinAL);
+  int B = digitalRead(pinBL);
+
+  if ((!B && !A) || (A && B)) {
+    ++counterL;
+  } else {
+    --counterL;
+  }
+}
+
+  /*
+    if (vitesseLineaire >= 0) {
+    if (vitesseAngulaire >= 0) {
+      analogWrite(moteurDroitAvant,   vitesseLineaire + vitesseAngulaire);
+      if ( vitesseLineaire - vitesseAngulaire < 0)
+        analogWrite(moteurGaucheAvant, 0);
+      else
+        analogWrite(moteurGaucheAvant, abs(vitesseLineaire - vitesseAngulaire));
+      analogWrite(moteurDroitDeriere, 0);
+      analogWrite(moteurGaucheDeriere, 0);
+    }
+    if (vitesseAngulaire <= 0) {
+      if ( vitesseLineaire - abs(vitesseAngulaire) < 0)
+        analogWrite(moteurDroitAvant, 0);
+      else
+        analogWrite(moteurDroitAvant, abs(vitesseLineaire - vitesseAngulaire));
+      analogWrite(moteurGaucheAvant, abs(vitesseLineaire + vitesseAngulaire));
+      analogWrite(moteurDroitDeriere, 0);
+      analogWrite(moteurGaucheDeriere, 0);
+    }
+    } else {
+    if (vitesseAngulaire >= 0) {
+      analogWrite(moteurDroitAvant, 0);
+      if (abs(vitesseLineaire - vitesseAngulaire) < 0)
+        analogWrite(moteurGaucheDeriere, 0);
+      else
+        analogWrite(moteurGaucheDeriere, abs(vitesseLineaire - vitesseAngulaire));
+      analogWrite(moteurDroitDeriere, abs(vitesseLineaire + vitesseAngulaire));
+      analogWrite(moteurGaucheDeriere, 0);
+    }
+    if (vitesseAngulaire <= 0) {
+      if ( abs(vitesseLineaire - vitesseAngulaire) < 0)
+        analogWrite(moteurDroitDeriere, 0);
+      else
+        analogWrite(moteurDroitDeriere, abs(vitesseLineaire - vitesseAngulaire));
+      analogWrite(moteurGaucheDeriere, abs(vitesseLineaire + vitesseAngulaire));
+      analogWrite(moteurDroitAvant, 0);
+      analogWrite(moteurGaucheAvant, 0);
+    }
+    }*/
+  //Serial.println(abs(testFront + vitesseAngulaire));
+
+
+void Avancer(int pwm)
+{
+  analogWrite(moteurDroitAvant, pwm);
+  analogWrite(moteurGaucheAvant, pwm);
+  analogWrite(moteurDroitDeriere, 0);
+  analogWrite(moteurGaucheDeriere, 0);
+}
+void Droite(int pwm)
+{
+  analogWrite(moteurDroitAvant, 0);
+  analogWrite(moteurGaucheAvant, pwm);
+  analogWrite(moteurDroitDeriere, pwm);
+  analogWrite(moteurGaucheDeriere, 0);
+}
+void Gauche(int pwm)
+{
+  analogWrite(moteurDroitAvant, pwm);
+  analogWrite(moteurGaucheAvant, 0);
+  analogWrite(moteurDroitDeriere, 0);
+  analogWrite(moteurGaucheDeriere, pwm);
+}
+void Arriere(int pwm)
+{
+  analogWrite(moteurDroitAvant,0);
+  analogWrite(moteurGaucheAvant, 0);
+  analogWrite(moteurDroitDeriere,  pwm);
+  analogWrite(moteurGaucheDeriere, pwm);
+}
+void Stop()
+{
+  analogWrite(moteurDroitAvant, 0);
+  analogWrite(moteurGaucheAvant, 0);
+  analogWrite(moteurDroitDeriere, 0);
+  analogWrite(moteurGaucheDeriere, 0);
+}
+void setup() {
+  Serial.begin(9600);
+
+  // Capteurs IR
+  pinMode(captDroit, INPUT);
+  pinMode(captGauche, INPUT);
+
+  pinMode(captExtDroit, INPUT);
+  pinMode(captExtGauche, INPUT);
+
+  digitalWrite(captDroit, HIGH);
+  digitalWrite(captDroit, HIGH);
+
+  digitalWrite(captExtDroit, HIGH);
+  digitalWrite(captExtGauche, HIGH);
+
+  // Encodeurs
+  pinMode(pinAR, INPUT);
+  pinMode(pinAL, INPUT);
+
+  pinMode(pinBR, INPUT);
+  pinMode(pinBL, INPUT);
+
+  digitalWrite(pinAR, INPUT);
+  digitalWrite(pinAL, INPUT);
+
+  digitalWrite(pinBR, INPUT);
+  digitalWrite(pinBL, INPUT);
+
+  attachInterrupt(digitalPinToInterrupt(pinAR), ISRtrackAR, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(pinAL), ISRtrackAL, CHANGE);
+
+  //Moteurs
+  pinMode(moteurGaucheAvant, OUTPUT);
+  pinMode(moteurGaucheDeriere, OUTPUT);
+
+  pinMode(moteurDroitAvant, OUTPUT);
+  pinMode(moteurDroitDeriere, OUTPUT);
+
+  digitalWrite(moteurGaucheAvant, LOW);
+  digitalWrite(moteurGaucheDeriere, LOW);
+
+  digitalWrite(moteurDroitAvant, LOW);
+  digitalWrite(moteurDroitDeriere, LOW);
+
+  //Ultrason
+  pinMode(TRIGGERleft, OUTPUT);
+  digitalWrite(TRIGGERleft, LOW);
+  pinMode(ECHOleft, INPUT);
+  //analogWrite(ECHOleft, 0);
+
+  pinMode(TRIGGERright, OUTPUT);
+  digitalWrite(TRIGGERright, LOW);
+  pinMode(ECHOright, INPUT);
+  //analogWrite(ECHOright, 0);
+
+  pinMode(TRIGGERfront, OUTPUT);
+  digitalWrite(TRIGGERfront, LOW);
+  pinMode(ECHOfront, INPUT);
+  //digitalWrite(ECHOfront, LOW);
+}
+
+int checkpoint1 = 0;
+
+
+int godem = 0;
+int jnab = 0;
+int gdimghalet = 0;
+int ghalet = 0;
+void  arta3(){
+   
+  gdimghalet = ghalet ;
+  float ghalet = distR - distL;
+  float P = 0.1 * ghalet;
+  float D = 0.1 * (ghalet - gdimghalet);
+  jnab = P + D;
+  //jnab = constrain ( P + D+jnab,-5,5);
+
+  //godem=distF * 0.2;
+  
+  int metourlemin = 50 + jnab;
+  int metourissar = 50 - jnab;
+  if (metourlemin >= 0){
+    analogWrite(moteurDroitAvant, metourlemin);
+    analogWrite(moteurDroitDeriere, 0);
+  }
+  else{
+  analogWrite(moteurDroitDeriere, -metourlemin);
+  analogWrite(moteurDroitAvant, 0);
+  }
+  if (metourissar >= 0){
+    analogWrite(moteurGaucheAvant, metourissar);
+    analogWrite(moteurGaucheDeriere, 0);
+  }
+  else{
+  analogWrite(moteurGaucheDeriere, -metourissar);
+  analogWrite(moteurGaucheAvant, 0);
+  }
+
+  /*if (metourlemin >= 0) {
+    if (metourissar >= 0) {
+      analogWrite(moteurDroitAvant, metourlemin);
+      analogWrite(moteurGaucheAvant, metourissar);
+      Serial.println("Avancer");
+      analogWrite(moteurDroitDeriere, 0);
+      analogWrite(moteurGaucheDeriere, 0);
+    } else {
+      Serial.println("Gauche");
+      analogWrite(moteurDroitAvant, metourlemin);
+      analogWrite(moteurGaucheAvant, 0);
+      analogWrite(moteurDroitDeriere, 0);
+      analogWrite(moteurGaucheDeriere, abs(metourissar));
+    }
+  } else {
+    if (metourissar >= 0) {
+      Serial.println("Droite");
+      analogWrite(moteurDroitAvant, 0);
+      analogWrite(moteurGaucheAvant, metourissar);
+      analogWrite(moteurDroitDeriere, abs(metourlemin));
+      analogWrite(moteurGaucheDeriere, 0);
+    } else {
+      Serial.println("Marche arriere");
+      analogWrite(moteurDroitAvant, 0);
+      analogWrite(moteurGaucheAvant, 0);
+      analogWrite(moteurDroitDeriere, abs(metourlemin));
+      analogWrite(moteurGaucheDeriere, abs(metourissar));
+    }
+}*/
+}
+void loop()
+{
+  /*
+    vitesseGauche(-200.00);
+    vitesseDroit(-200.00);
+  */
+  distanceright();
+  distanceleft();
+  distancefront();
+  /*
+    Serial.print(distR);
+    Serial.print(" ");
+    Serial.print(distL);
+    Serial.print(" ");
+    Serial.println(distF);
+  */
+  if (distF<=100){
+    Arriere(30);
+  }
+  else 
+      arta3();
+     /*
+    //  PdUltrason();
+    c1 = digitalRead(captExtDroit);
+    c2 = digitalRead(captDroit);
+    c3 = digitalRead(captGauche);
+    c4 = digitalRead(captExtGauche);
+
+    etatcapteur = c4 * 1000 + c3 * 100 + c2 * 10 + c1;
+    if (checkpoint1==0)
+    switch (etatcapteur) {
+      case 0:
+        Avancer(80);
+        checkpoint1=1;
+        break;
+      case 1:
+        Droite(80);
+        break;
+      case 10:
+        Droite(80);
+        break;
+      case 11:
+        Droite(80);
+        break;
+      case 100:
+        Gauche(80);
+        break;
+      case 101:
+        Avancer(80);
+        break;
+      case 110:
+        Avancer(80);
+        break;
+      case 111:
+        Droite(80);
+        break;
+      case 1000:
+        Gauche(80);
+        break;
+      case 1001:
+        Avancer(80);
+        break;
+      case 1010:
+        Droite(80);
+        break;
+      case 1011:
+        Avancer(80);
+        break;
+      case 1100:
+        Gauche(80);
+        break;
+      case 1101:
+        Avancer(80);
+        break;
+      case 1110:
+        Gauche(80);
+        break;
+      case 1111:
+        Avancer(80);
+        break;
+      default:
+        Stop();
+          break;
+    }
+    if (checkpoint1==1)
+     switch (etatcapteur) {
+      case 0:
+        Avancer(140);
+        break;
+      case 1:
+        Droite(140);
+        break;
+      case 10:
+        Droite(140);
+        break;
+      case 11:
+        Droite(140);
+        break;
+      case 100:
+        Gauche(140);
+        break;
+      case 101:
+        Avancer(140);
+        break;
+      case 110:
+        Avancer(140);
+        break;
+      case 111:
+        Gauche(140);
+        break;
+      case 1000:
+        Gauche(140);
+        break;
+      case 1001:
+        Avancer(140);
+        break;
+      case 1010:
+        Droite(140);
+        break;
+      case 1011:
+        Avancer(140);
+        break;
+      case 1100:
+        Gauche(140);
+        break;
+      case 1101:
+        Avancer(140);
+        break;
+      case 1110:
+        Gauche(140);
+        break;
+      case 1111:
+        Avancer(140);
+        break;
+      default:
+        Stop();
+          break;
+    }
+  */
+}
