@@ -1,16 +1,16 @@
-# PUNKS: A Line Follower and Maze Solver Robot
+# Line Follower and Maze Solver Robot
 
-### IEEE FST Robots 3.0: Survey Corps Challenge, AerobotiX INSAT Club
+### IEEE FST Robots 3.0: Survey Corps Challenge, AerobotiX INSAT
 
 **Skills and technologies used:** C++, Arduino, SOLIDWORKS, PID Control, Encoder Reading, Sampling, Odometry, Ultrasonic Sensing, IR tracking, ISR
 
 ## Introduction
 
-The Line Follower and Maze Solver Robot project, developed under the IEEE FST Robots 3.0 competition in the Survey Corps Challenge in collaboration with AerobotiX INSAT Club, showcases innovative engineering solutions to navigate predefined paths autonomously. Leveraging a combination of hardware and software technologies, this project aims to efficiently tackle the challenges posed by line-following and maze-solving tasks.
+The Line Follower and Maze Solver Robot project, developed under the IEEE FST Robots 3.0 competition in the Survey Corps Challenge in collaboration with AerobotiX INSAT, demonstrates innovative engineering solutions for autonomous navigation along predefined paths. By integrating hardware and software technologies, the project aims to efficiently tackle challenges posed by line-following and maze-solving tasks.
 
 ## Key Features
 
-- Autonomous line-following capabilities with an adaptive algorithm for path optimization.
+- Autonomous line following capabilities with an adaptive algorithm for path optimization.
 - Efficient maze traversal using a high-performance velocity PID controller and ultrasonic sensors.
 - Integration of interrupt service routines (ISRs) for precise encoder readings and control.
 
@@ -46,8 +46,13 @@ Contributions to further enhance the capabilities and performance of this projec
 
 This project is licensed under the [GPL-3.0 License](LICENSE).
 
-## Contact
+## Contacts
 
 For inquiries or feedback, please contact:
 
 - Elyes Khechine: elyeskhechine@gmail.com
+- Amer Djobbi: amer.djobbi@insat.ucar.tn
+- Dorra Bousrih: dorra.bousrih@insat.ucar.tn
+- Nermine Gharbi: nermine.gharbi@insat.ucar.tn
+- Wala Zoghlami: wala.zoghlami@insat.ucar.tn
+- Mohamed Loukil: mohamed.loukil@insat.ucar.tn
