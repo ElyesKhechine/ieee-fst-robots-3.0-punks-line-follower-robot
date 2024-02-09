@@ -1,46 +1,41 @@
 # Line Follower and Maze Solver Robot
 
-### IEEE FST Robots 3.0: Survey Corps Challenge, AerobotiX INSAT
+### IEEE FST Robots 3.0: Survey Corps Challenge, AerobotiX INSAT Club
 
-**Skills and technologies used:** C++, Arduino, SOLIDWORKS, PID Control, Encoder Reading, Sampling, Odometry, Ultrasonic Sensing, IR tracking, ISR
+**Technologies:** C++, Arduino, SOLIDWORKS, PID Control, Sampling, Odometry, ISR, Encoders, I2C, Ultrasonic Sensors, IR tracking, Motor Control
 
 ## Introduction
 
-The Line Follower and Maze Solver Robot project, developed under the IEEE FST Robots 3.0 competition in the Survey Corps Challenge in collaboration with AerobotiX INSAT, demonstrates innovative engineering solutions for autonomous navigation along predefined paths. By integrating hardware and software technologies, the project aims to efficiently tackle challenges posed by line-following and maze-solving tasks.
+This project, conducted under the IEEE FST Robots 3.0 competition in the Survey Corps Challenge in collaboration with AerobotiX INSAT Club, focused on the rapid development of a versatile robot capable of following lines and solving mazes. With a collaborative effort and efficient utilization of resources, the project aimed to demonstrate proficiency in critical design, sensor integration, and algorithmic implementation.
+
+## Project Scope
+
+Executed within a constrained timeline from November 10, 2021, to November 14, 2021, the project brought together a team of 5 individuals who worked diligently to address design challenges and implement robust control algorithms. The scope encompassed design, assembly, and programming phases, requiring swift decision-making and meticulous attention to detail.
 
 ## Key Features
 
-- Autonomous line following capabilities with an adaptive algorithm for path optimization.
-- Efficient maze traversal using a high-performance velocity PID controller and ultrasonic sensors.
-- Integration of interrupt service routines (ISRs) for precise encoder readings and control.
-
-## Project Overview
-
-In a collaborative effort involving 4 colleagues, the project was conceptualized and executed within a tight deadline of 3 days. Each team member played a crucial role in critical design decisions, sensor selection, assembly, and programming, ensuring the successful realization of the robot.
-
-## Technical Details
-
-- **Adaptive Line Following**: Developed an adaptive algorithm utilizing IR sensor readings to optimize navigation actions, achieving an impressive 94% path-following accuracy across various scenarios.
-- **High-Performance Velocity PID Controller**: Implemented a robust PID controller with interrupt service routines to process encoder readings, resulting in significant speed enhancements during straight-line segments, leading to a 35% reduction in mission time.
-- **Precise Maze Traversal**: Utilized a PD controller in conjunction with ultrasonic sensors to optimize maze traversal while maintaining a precise 1 cm wall-following distance.
+- **Adaptive Line Following Algorithm**: Implementation of an adaptive algorithm utilizing IR sensor readings to determine optimal navigation actions, achieving a remarkable 94% path-following accuracy across various scenarios.
+- **High-Performance Velocity PID Controller**: Development of a velocity PID controller with interrupt service routines (ISRs) for efficient encoder processing, resulting in speed enhancements and a 35% reduction in mission time during straight-line segments.
+- **Precision Maze Traversal**: Tuning of a PD controller with ultrasonic sensors for optimized maze traversal, ensuring consistent wall-following at a precise 1 cm distance.
+- **Collaborative Design**: Active involvement in critical design decisions, sensor selection, cable management, assembly, and programming, fostering a collaborative environment conducive to project success.
 
 ## Getting Started
 
 ### Installation
 
-1. Ensure all hardware components are properly assembled as per the provided documentation.
-2. Upload the Arduino code onto the microcontroller.
-3. Calibrate sensors and fine-tune PID parameters as necessary for optimal performance.
+1. Ensure compatibility and proper setup of hardware components.
+2. Install necessary software dependencies, including Arduino IDE and SOLIDWORKS.
+3. Configure system settings and upload firmware to the Arduino microcontroller.
 
 ### Usage
 
-1. Place the robot on the designated starting point of the track or maze.
-2. Power on the robot and observe its autonomous navigation through the predefined path.
-3. Monitor performance and make adjustments as needed to achieve desired results.
+1. Power on the robot and initialize the control software.
+2. Monitor real-time feedback from sensors using the provided interface.
+3. Execute line following and maze traversal tasks, observing the robot's performance in various scenarios.
 
 ## Contributing
 
-Contributions to further enhance the capabilities and performance of this project are welcome.
+Contributions aimed at further enhancing project functionalities and addressing emerging challenges are encouraged.
 
 ## License
 
@@ -48,7 +43,7 @@ This project is licensed under the [GPL-3.0 License](LICENSE).
 
 ## Contacts
 
-For inquiries or feedback, please contact:
+For inquiries or collaboration opportunities, please contact:
 
 - Elyes Khechine: elyeskhechine@gmail.com
 - Amer Djobbi: amer.djobbi@insat.ucar.tn
