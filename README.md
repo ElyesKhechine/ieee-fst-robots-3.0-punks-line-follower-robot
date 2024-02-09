@@ -10,7 +10,7 @@ This project, conducted under the IEEE FST Robots 3.0 competition in the Survey 
 
 ## Project Scope
 
-Executed within a constrained timeline from November 10, 2021, to November 14, 2021, the project brought together a team of 5 individuals who worked diligently to address design challenges and implement robust control algorithms. The scope encompassed design, assembly, and programming phases, requiring swift decision-making and meticulous attention to detail.
+Executed within a constrained timeline from November 10, 2021, to November 14, 2021, the project brought together a team of 6 individuals who worked diligently to address design challenges and implement robust control algorithms. The scope encompassed design, assembly, and programming phases, requiring swift decision-making and meticulous attention to detail.
 
 ## Key Features
 
