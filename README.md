@@ -12,7 +12,7 @@ This project, conducted under the IEEE FST Robots 3.0 competition in the Survey 
 
 Executed within a constrained timeline from November 10, 2021, to November 14, 2021, the project brought together a team of 6 individuals who worked diligently to address design challenges and implement robust control algorithms. The scope encompassed design, assembly, and programming phases, requiring swift decision-making and meticulous attention to detail.
 
-## Key Features
+## Technical Details
 
 - **Adaptive Line Following Algorithm**: Implementation of an adaptive algorithm utilizing IR sensor readings to determine optimal navigation actions, achieving a remarkable 94% path-following accuracy across various scenarios.
 - **High-Performance Velocity PID Controller**: Development of a velocity PID controller with interrupt service routines (ISRs) for efficient encoder processing, resulting in speed enhancements and a 35% reduction in mission time during straight-line segments.
