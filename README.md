@@ -6,11 +6,11 @@
 
 ## Introduction
 
-This project, conducted under the IEEE FST Robots 3.0 competition in the Survey Corps Challenge in collaboration with AerobotiX INSAT Club, focused on the rapid development of a versatile robot capable of following lines and solving mazes. With a collaborative effort and efficient utilization of resources, the project aimed to demonstrate proficiency in critical design, sensor integration, and algorithmic implementation.
+This project focused on the rapid development of a versatile robot capable of following lines and solving mazes. With a collaborative effort and efficient utilization of resources, the project aimed to demonstrate proficiency in critical design, sensor integration, and algorithmic implementation.
 
 ## Project Scope
 
-Executed within a constrained timeline from November 10, 2021, to November 14, 2021, the project brought together a team of 6 individuals who worked diligently to address design challenges and implement robust control algorithms. The scope encompassed design, assembly, and programming phases, requiring swift decision-making and meticulous attention to detail.
+Executed within a tight timeline from November 10, 2021, to November 14, 2021, the project brought together a team of 6 individuals who worked diligently to address design challenges and implement robust control algorithms for the IEEE FST Robots 3.0 competition in the Survey Corps Challenge in collaboration with AerobotiX INSAT Club. This encompassed design, assembly, and programming phases, requiring swift decision-making and meticulous attention to detail.
 
 ## Technical Details
 
